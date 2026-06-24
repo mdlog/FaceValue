@@ -49,7 +49,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     try {
       const { address: addr } = await StellarWalletsKit.authModal();
-      setAddress(addr);
+      if (addr) setAddress(addr);
     } catch (e) {
       setError(e instanceof Error ? e.message : "wallet connection failed");
     } finally {
@@ -58,8 +58,10 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const disconnect = React.useCallback(() => {
-    // Fire-and-forget — the async disconnect is best-effort; UI state clears immediately.
-    StellarWalletsKit.disconnect().catch(() => undefined);
+    // Fire-and-forget — best-effort; UI state clears immediately. Browser-only.
+    if (typeof window !== "undefined") {
+      StellarWalletsKit.disconnect().catch(() => undefined);
+    }
     setAddress(null);
   }, []);
 
