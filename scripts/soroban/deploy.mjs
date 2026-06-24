@@ -36,10 +36,12 @@ async function main() {
 
   console.error("→ deploying…");
   const admin = sh("stellar", ["keys", "address", IDENT]);
-  const contractId = sh("stellar", [
+  const deployOut = sh("stellar", [
     "contract", "deploy", "--wasm", WASM, "--source", IDENT, "--network", NETWORK,
     "--", "--admin", admin, "--vk_bytes", vkHex,
   ]);
+  const contractId = deployOut.match(/C[A-Z0-9]{55}/)?.[0];
+  if (!contractId) throw new Error(`could not parse contract id from deploy output:\n${deployOut}`);
   console.error(`→ deployed: ${contractId}`);
 
   for (const [eventId, evt] of Object.entries(fixtures.events)) {
