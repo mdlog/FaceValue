@@ -129,7 +129,7 @@ The resale verdict can now be verified on Soroban testnet instead of simulated. 
    - Builds the Soroban contract
    - Deploys it to testnet
    - Initializes it with the serialized verifying key from your circuit
-   - Registers the three events (cap-change, nullifier-burned, verdict-emitted) using cap + root from `src/lib/zk/fixtures.json`
+   - Registers the three ticketed events (Aurora Skyline, City vs Rovers, Hamlet) — each with its own price cap + issued-set Merkle root from `src/lib/zk/fixtures.json`
    - Prints the new `NEXT_PUBLIC_FACEVALUE_CONTRACT_ID` to paste into `.env.local`
 
    (If you don't have `stellar` CLI or a funded testnet identity yet, skip this step and run the app in graceful-fallback mode; see below.)
