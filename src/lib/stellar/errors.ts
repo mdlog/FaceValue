@@ -23,6 +23,6 @@ export function mapContractError(code: number): string {
 
 /** Extract a contract error code from a host error string like `Error(Contract, #8)`. */
 export function extractContractError(text: string): number | undefined {
-  const m = text.match(/#(\d+)/);
+  const m = text.match(/Error\(Contract,\s*#(\d+)\)/);
   return m ? Number(m[1]) : undefined;
 }
