@@ -341,7 +341,7 @@ emit    nullifier = Poseidon(ticket_secret)`}
                 {isOnChainConfigured() && (
                   <div className="rounded-[5px] edge-ink bg-paper-elevated p-4 text-[13px]">
                     {!address ? (
-                      <p className="text-ink-soft">Connect wallet untuk submit proof ini ke Soroban testnet.</p>
+                      <p className="text-ink-soft">Connect a wallet to submit this proof to Soroban testnet.</p>
                     ) : onchain.phase === "idle" ? (
                       <Button onClick={submitOnChain} className="w-full">
                         <Wand2 className="h-4 w-4" /> Submit on-chain (wallet signs)

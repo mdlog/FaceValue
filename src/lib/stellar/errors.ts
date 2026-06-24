@@ -10,15 +10,15 @@ export interface SubmitResult {
 }
 
 const ERRORS: Record<number, string> = {
-  5: "Event belum terdaftar di kontrak.",
-  6: "Cap on-chain tidak cocok dengan proof (registrasi event salah).",
-  7: "Merkle root on-chain tidak cocok dengan proof.",
-  8: "Tiket sudah dijual ulang on-chain — ditolak (nullifier sudah dibakar).",
-  9: "Proof ditolak kontrak (pairing check gagal).",
+  5: "Event is not registered on the contract.",
+  6: "On-chain cap does not match the proof (event registered incorrectly).",
+  7: "On-chain Merkle root does not match the proof.",
+  8: "This ticket was already resold on-chain — rejected (nullifier already burned).",
+  9: "The contract rejected the proof (pairing check failed).",
 };
 
 export function mapContractError(code: number): string {
-  return ERRORS[code] ?? `Kontrak menolak transaksi (error #${code}).`;
+  return ERRORS[code] ?? `The contract rejected the transaction (error #${code}).`;
 }
 
 /** Extract a contract error code from a host error string like `Error(Contract, #8)`. */
