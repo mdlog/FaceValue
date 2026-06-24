@@ -338,7 +338,7 @@ emit    nullifier = Poseidon(ticket_secret)`}
                 className="space-y-5"
               >
                 <TxStamp variant="accept" hash={txHash} capCents={cap} priceCents={priceCents} />
-                {isOnChainConfigured() && (
+                {isOnChainConfigured() ? (
                   <div className="rounded-[5px] edge-ink bg-paper-elevated p-4 text-[13px]">
                     {!address ? (
                       <p className="text-ink-soft">Connect a wallet to submit this proof to Soroban testnet.</p>
@@ -357,7 +357,14 @@ emit    nullifier = Poseidon(ticket_secret)`}
                       </p>
                     )}
                   </div>
-                )}
+                ) : address ? (
+                  <div className="rounded-[5px] edge-ink bg-paper-elevated p-4 text-[13px] leading-relaxed text-ink-soft">
+                    Wallet connected. Set{" "}
+                    <span className="font-mono text-[12px] text-ink">NEXT_PUBLIC_FACEVALUE_CONTRACT_ID</span>{" "}
+                    (deploy via <span className="font-mono text-[12px] text-ink">scripts/soroban/deploy.mjs</span>)
+                    to enable on-chain submission. Until then this verdict is the simulated/derived one.
+                  </div>
+                ) : null}
                 {mode === "simulated" && <SimNote />}
                 {publicSignals && <PublicSignals signals={publicSignals} />}
                 <div className="grid grid-cols-[auto_1fr] items-center gap-4 rounded-[5px] edge-ink bg-paper-elevated p-4">

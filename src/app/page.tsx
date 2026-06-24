@@ -1,65 +1,132 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, Scale, EyeOff, FileCheck2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { HashMono } from "@/components/ui/hash-mono";
+import { EVENTS, fmtUSD } from "@/lib/mock-data";
 
-export default function Home() {
+export default function CatalogPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="space-y-14">
+      {/* ---- hero ---- */}
+      <section className="grid gap-10 lg:grid-cols-[7fr_5fr] lg:items-end">
+        <div>
+          <Badge tone="brass">UK Ticket Resale Cap · live Nov 2025</Badge>
+          <h1 className="mt-4 font-display text-[clamp(2.4rem,5vw,4rem)] leading-[0.98] tracking-tight text-ink">
+            Resale at face value.
+            <br />
+            <span className="italic">Proven, not promised.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-ink-soft">
+            FaceValue proves every resale is{" "}
+            <strong className="font-semibold text-ink">at or below the public face-value cap</strong>{" "}
+            — without revealing the buyer, the seller, or the price. The cap is
+            enforced by a zero-knowledge proof verified on Stellar, not by trusting
+            a platform.
           </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link
+              href="/resale"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-[6px] bg-ink px-5 text-sm font-medium text-paper transition-colors hover:bg-ink-soft"
+            >
+              See the cap enforced <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/wallet"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-[6px] edge-ink bg-paper-elevated px-5 text-sm font-medium text-ink transition-colors hover:bg-paper"
+            >
+              Open my wallet
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <ul className="space-y-3">
+          <Principle icon={<Scale className="h-4 w-4" />} title="Enforcement is the headline">
+            A Soroban contract rejects any resale priced above the regulated cap.
+          </Principle>
+          <Principle icon={<EyeOff className="h-4 w-4" />} title="Privacy is the wedge">
+            Buyer, seller and exact price stay off the public ledger.
+          </Principle>
+          <Principle icon={<FileCheck2 className="h-4 w-4" />} title="Auditable on demand">
+            A scoped view key lets a regulator reconstruct the detail — selective disclosure.
+          </Principle>
+        </ul>
+      </section>
+
+      {/* ---- catalog ---- */}
+      <section>
+        <div className="rule-ink mb-6 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 pb-2">
+          <h2 className="font-display text-2xl tracking-tight text-ink">Event registry</h2>
+          <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-private">
+            {EVENTS.length} events · per-event caps published
+          </span>
         </div>
-      </main>
+
+        <div className="grid gap-5 md:grid-cols-3">
+          {EVENTS.map((e) => (
+            <Link
+              key={e.id}
+              href="/resale"
+              className="group flex flex-col gap-4 rounded-[6px] edge-ink bg-paper-elevated p-5 transition-shadow hover:shadow-[0_12px_28px_-20px_rgba(26,23,20,0.55)]"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-private">
+                  {e.category}
+                </span>
+                <Badge tone="brass">CAP {fmtUSD(e.faceValueCapCents)}</Badge>
+              </div>
+              <div>
+                <h3 className="font-display text-xl leading-none tracking-tight text-ink">
+                  {e.name}
+                </h3>
+                <p className="mt-1.5 text-[13px] text-ink-soft">{e.subtitle}</p>
+              </div>
+              <dl className="mt-auto space-y-1.5 border-t border-ink/10 pt-3 font-mono text-[11px]">
+                <Meta k="Venue" v={`${e.venue} · ${e.city}`} />
+                <Meta k="Date" v={e.date} />
+                <Meta k="Issued" v={e.issuedCount.toLocaleString()} />
+                <div className="flex items-center justify-between">
+                  <span className="uppercase tracking-[0.1em] text-private">Merkle root</span>
+                  <HashMono value={e.merkleRoot} copyable={false} />
+                </div>
+              </dl>
+              <span className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.1em] text-ink transition-colors group-hover:text-cap-line">
+                Resell at face value <ArrowRight className="h-3.5 w-3.5" />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function Principle({
+  icon,
+  title,
+  children,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <li className="flex gap-3 rounded-[6px] edge-ink bg-paper-elevated/70 p-4">
+      <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-[5px] bg-ink text-paper">
+        {icon}
+      </span>
+      <div>
+        <p className="font-display text-[15px] tracking-tight text-ink">{title}</p>
+        <p className="mt-0.5 text-[13px] leading-snug text-ink-soft">{children}</p>
+      </div>
+    </li>
+  );
+}
+
+function Meta({ k, v }: { k: string; v: string }) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span className="uppercase tracking-[0.1em] text-private">{k}</span>
+      <span className="num text-ink-soft">{v}</span>
     </div>
   );
 }

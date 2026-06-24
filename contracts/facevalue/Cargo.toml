@@ -1,0 +1,41 @@
+[package]
+name = "facevalue"
+version = "0.1.0"
+edition = "2021"
+publish = false
+rust-version = "1.89.0"
+description = "FaceValue: Soroban Groth16 verify-and-nullify contract for ticket resale price-cap enforcement"
+
+[lib]
+# cdylib -> wasm for deploy; rlib -> import as a library (e.g. tests / off-chain tooling).
+crate-type = ["cdylib", "rlib"]
+doctest = false
+
+[dependencies]
+# soroban-sdk 25.3.x exposes the BN254 (alt_bn128) crypto host functions
+# (g1_add / g1_mul / pairing_check) under env.crypto().bn254() — Protocol 25/26 —
+# which the contract uses to verify the EXACT proofs our circom/snarkjs
+# ("curve":"bn128") pipeline produces. The `alloc` feature is needed for the
+# in-contract verification (Vec usage in the pairing check).
+soroban-sdk = { version = "25.3.1", features = ["alloc"] }
+
+[dev-dependencies]
+# testutils for env.register / mock_all_auths in the #[cfg(test)] module.
+# The real-proof test fixture (bn254_real_fixture) is pre-serialized into BN254
+# byte arrays by scripts/zk/make-contract-fixture.mjs, so the tests need no
+# curve/ark dependency — they feed raw bytes straight into from_bytes.
+soroban-sdk = { version = "25.3.1", features = ["testutils"] }
+
+[profile.release]
+opt-level = "z"
+overflow-checks = true
+debug = 0
+strip = "symbols"
+debug-assertions = false
+panic = "abort"
+codegen-units = 1
+lto = true
+
+[profile.release-with-logs]
+inherits = "release"
+debug-assertions = true

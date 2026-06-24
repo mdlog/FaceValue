@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# rust / soroban build output
+target/
+# local tool binaries + internal scratch (not part of the project)
+/.localbin/
+/.superpowers/

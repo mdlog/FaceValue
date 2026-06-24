@@ -2,7 +2,6 @@
 
 import { Wallet, LogOut } from "lucide-react";
 import { useWallet } from "@/lib/stellar/wallet";
-import { isOnChainConfigured } from "@/lib/stellar/config";
 import { cn } from "@/lib/utils";
 
 function trunc(addr: string) {
@@ -11,7 +10,6 @@ function trunc(addr: string) {
 
 export function ConnectWallet({ className }: { className?: string }) {
   const { address, connect, disconnect, connecting } = useWallet();
-  if (!isOnChainConfigured()) return null;
 
   if (address) {
     return (
